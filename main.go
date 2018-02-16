@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/gohugoio/hugo/hugolib"
 	"gopkg.in/go-playground/webhooks.v3"
 	"gopkg.in/go-playground/webhooks.v3/github"
 	"gopkg.in/src-d/go-git.v4"
@@ -23,6 +24,7 @@ var (
 
 func main() {
 	flag.Parse()
+	fmt.Println(hugolib.CommitHash)
 
 	go handleWebhook(*secret, *hookPort)
 	go handlePulls(*url)
