@@ -66,7 +66,7 @@ func handlePulls(url string) {
 
 func handleWebhook(secret string, port int) {
 	hook := github.New(&github.Config{Secret: secret})
-	hook.RegisterEvents(handleCommit, github.CommitCommentEvent)
+	hook.RegisterEvents(handleCommit, github.PushEvent)
 	err := webhooks.Run(hook, ":"+strconv.Itoa(port), "/webhooks")
 	if err != nil {
 		panic(err)
