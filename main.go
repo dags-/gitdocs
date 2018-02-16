@@ -31,7 +31,7 @@ func main() {
 
 	pulls <- true
 
-	cmd := exec.Command("hugo.exe", "server", "-s", "site", "-p", strconv.Itoa(*webPort))
+	cmd := exec.Command("hugo", "server", "-s", "site", "-p", strconv.Itoa(*webPort))
 	cmd.Stdout = os.Stdout
 	cmd.Stdin = os.Stdin
 	err := cmd.Run()
