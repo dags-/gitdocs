@@ -6,8 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
-	"time"
-
 	"github.com/gohugoio/hugo/hugolib"
 	"gopkg.in/go-playground/webhooks.v3"
 	"gopkg.in/go-playground/webhooks.v3/github"
@@ -47,20 +45,18 @@ func handlePulls(url string) {
 		}
 	}
 
+	w, err := r.Worktree()
+	if err != nil {
+		panic(err)
+	}
+
 	for {
 		<-pulls
 
-		w, err := r.Worktree()
-		if err != nil {
-			panic(err)
-		}
-
-		err = w.Pull(&git.PullOptions{RemoteName: "origin"})
+		err = w.Pull(&git.PullOptions{RemoteName: "origin", Force: true})
 		if err != nil {
 			fmt.Println("Error pulling remote:", err)
 		}
-
-		time.Sleep(5 * time.Second)
 	}
 }
 
@@ -75,7 +71,7 @@ func handleWebhook(secret string, port int) {
 
 func handleCommit(payload interface{}, header webhooks.Header) {
 	go func() {
-		fmt.Println("payload received:", payload)
+		fmt.Println("push received")
 		pulls <- true
 	}()
 }
